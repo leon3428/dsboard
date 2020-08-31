@@ -1,0 +1,107 @@
+body {
+    font-family: "Lato", sans-serif;
+}
+
+/*.sidenav {
+    height: 100%;
+    width: 200px;
+    position: fixed;
+    z-index: 1;
+    top: 100px;
+    left: 0;
+    background-color: #111;
+    overflow-x: hidden;
+    padding-top: 20px;
+}
+
+.sidenav a {
+    padding: 6px 6px 6px 32px;
+    text-decoration: none;
+    font-size: 25px;
+    color: #818181;
+    display: block;
+}
+
+.sidenav a:hover {
+    color: #f1f1f1;
+}*/
+
+  
+/* Create two unequal columns that floats next to each other */
+.column {
+    float: left;
+    padding: 10px;
+}
+
+.sidebar {
+    position: fixed;
+    width: 12%;
+    height: 100%;
+    background-color: #111;
+}
+
+.sidebar h1{
+    padding-left: 10px;
+    text-decoration: none;
+    color: #F5FAEF;
+}
+
+
+
+.main {
+    margin-left: 12%;
+    width: 88%;
+}
+
+/* Clear floats after the columns */
+.row:after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
+.slidecontainer {
+    width: 90%; /* Width of the outside container */
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: auto;
+    position: absolute;
+    bottom: 30px;
+}
+.slidecontainer p{
+    text-decoration: none;
+    font-size: 20px;
+    color: #818181;
+    display: block;
+    margin-bottom: 0px;
+}
+  
+.slider {
+    margin-top: 0px;
+    -webkit-appearance: none;
+    width: 100%;
+    height: 10px;
+    border-radius: 3px;  
+    background: #818181;
+    outline: none;
+    -webkit-transition: .2s;
+    transition: opacity .2s;
+}
+
+.slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%; 
+    background: #FF7F11;
+    cursor: pointer;
+}
+
+.slider::-moz-range-thumb {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: #FF7F11;
+    cursor: pointer;
+}
