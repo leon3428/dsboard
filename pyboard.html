@@ -2,14 +2,17 @@
 <html lang="en">
 
 <head>
-    <title>Bootstrap 4 Example</title>
+    <title>PyBoard</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="pyboard.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
 
 </head>
 
@@ -17,20 +20,77 @@
     <div class="row-fluid">
         <div class="column sidebar">
             <h1>PyBoard</h1>
+            <div class = "row">
+                <div class="col">
+                    <button type="button" class="btn dropdown-toggle" data-toggle="dropdown">
+                        Project
+                    </button>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item" href="#">Project 1</a>
+                        <a class="dropdown-item" href="#">project 2</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="#" data-toggle="modal" data-target="#browseModal">Find Projects</a>
+                    </div>
+                    
+                </div>
+                <div class = "col">
+                    <i class="glyphicon glyphicon-refresh"></i>
+                </div>
+            </div>
+            
             <div class="slidecontainer">
                 <p>Zoom</p>
-                <input type="range" min="1" max="8" value="4" class="slider" id="myRange">
+                <input type="range" min="1" max="6" value="4" class="slider" id="zoomSlider">
             </div>
             
         </div>
         <div class="column main">
-            <div class="container-fluid p-3 main">
-                <h2>main </h2>
-
+            <div class="modal" id="browseModal">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                    
+                        <!-- Modal Header -->
+                        <div class="modal-header">
+                            <h4 class="modal-title">Find your project</h4>
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        </div>
+                        
+                        <!-- Modal body -->
+                        <div class="modal-body">
+                         
+                            
+                            <input type="file" id="fileIn" class="form-control-file border" name="file">
+                            
+                            <button type="submit" id="btnSub" class="btn"> Submit</button>
+                        </div>
+                        
+                        <!-- Modal footer -->
+                        <div class="modal-footer">
+                            <button type="button" class="btn" data-dismiss="modal" style="background-color: #FF7F11; color: #F5FAEF">Close</button>
+                        </div>
+                    
+                    </div>
+                </div>
+            </div>
+            <div class="flex-container" id="plotContainer">
+                <div class="plot" id = "plot1">
+                    <canvas id="myChart" class="plotCanvas"></canvas>
+                </div>
+                <div class="plot">2</div>
+                <div class="plot">3</div>  
+                <div class="plot">4</div>
+                <div class="plot">5</div>
+                <div class="plot">6</div>  
+                <div class="plot">6</div>  
+                <div class="plot">6</div>  
+                <div class="plot">6</div>  
+                <div class="plot">6</div>  
+                <div class="plot">6</div>  
             </div>
 
         </div>
     </div>
+    <script src = "pyboard.js"></script>
 </body>
 
 </html>

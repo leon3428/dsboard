@@ -2,38 +2,13 @@ body {
     font-family: "Lato", sans-serif;
 }
 
-/*.sidenav {
-    height: 100%;
-    width: 200px;
-    position: fixed;
-    z-index: 1;
-    top: 100px;
-    left: 0;
-    background-color: #111;
-    overflow-x: hidden;
-    padding-top: 20px;
-}
-
-.sidenav a {
-    padding: 6px 6px 6px 32px;
-    text-decoration: none;
-    font-size: 25px;
-    color: #818181;
-    display: block;
-}
-
-.sidenav a:hover {
-    color: #f1f1f1;
-}*/
-
-  
-/* Create two unequal columns that floats next to each other */
 .column {
     float: left;
     padding: 10px;
 }
 
 .sidebar {
+    min-width: 200px;
     position: fixed;
     width: 12%;
     height: 100%;
@@ -46,14 +21,26 @@ body {
     color: #F5FAEF;
 }
 
+.sidebar button{
+    margin-top: 20px;
+    margin-left: 10px;
+    width: 116%; 
+    background-color: #F5FAEF;
+    text-align: center;
+}
 
+.sidebar i{
+    color: #F5FAEF;
+    font-size: 25px;
+    margin-top: 23px;
+    margin-left: 20px;
+}
 
 .main {
-    margin-left: 12%;
+    margin-left: max(12%, 200px);
     width: 88%;
 }
 
-/* Clear floats after the columns */
 .row:after {
     content: "";
     display: table;
@@ -61,7 +48,7 @@ body {
 }
 
 .slidecontainer {
-    width: 90%; /* Width of the outside container */
+    width: 90%; 
     margin-left: auto;
     margin-right: auto;
     margin-top: auto;
@@ -104,4 +91,36 @@ body {
     border-radius: 50%;
     background: #FF7F11;
     cursor: pointer;
+}
+
+.modal-body button{
+    background-color: #111; 
+    color: #F5FAEF;
+    margin-top: 30px;
+}
+
+.modal-body button:hover{
+    color: #FF7F11;
+}
+
+.flex-container {
+    display: flex;
+    flex-wrap: wrap;
+}
+  
+.flex-container > div {
+    background-color: #f1f1f1;
+    width: 20%;
+    margin: 10px;
+    text-align: center;
+    line-height: 75px;
+    font-size: 30px;
+}
+  
+.plot {
+    position: relative;
+    margin: auto;
+    height: 80vh;
+    width: 80vw;
+    padding: 10px;
 }
