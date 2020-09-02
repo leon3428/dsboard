@@ -30,55 +30,87 @@ $(function(){
     window.addEventListener("resize", resizePlots);
 
     //opening projects
+    var projects = [];
+    var project = '';
+    var selectedProject = 0;
+
     $('#fileIn').change(function() { 
         var fr=new FileReader(); 
         fr.onload=function(){ 
-            console.log(fr.result); 
+            project = JSON.parse(fr.result);  
         } 
             
         fr.readAsText(this.files[0]); 
-    }) 
+    })
+    
+    $('#btnSub').on('click', function(){
+        projects.push(project);
+        var name = project[0].project_name;
+        var id = projects.length-1;
+        $('#projectsDropdown').append('<p class="dropdown-item projectItem" id="'+ id.toString() +'">' + name +'</p>');
+        $("#browseModal .close").click();
+        selectedProject = projects.length-1;
+        refreshView();
+    })
 
+    function refreshView()
+    {
+        var m_project = projects[selectedProject];
+        $('#plotContainer').empty();
+        for(var i = 1;i < m_project.length; i++)
+        {
+            var htmlLine = '<div class="plot" id = "plot'+ i.toString() +'"><canvas id="Chart'+ i.toString() +'" class="plotCanvas"></canvas></div>';
+            $('#plotContainer').append(htmlLine);
+        }
+        resizePlots();
+    }
 
-    //drawing plots
-    drawPlot();
+    $(document).on("click", ".projectItem" , function() {
+        var projectId = $(this).attr('id');
+        projectId = Number(projectId);
+        selectedProject = projectId;
+        refreshView();
+    })
 
     function drawPlot()
     {
         var data = {
-            labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul"],
             datasets: [{
-                label: "Dataset #1",
-                backgroundColor: "rgba(255,99,132,0.2)",
-                borderColor: "rgba(255,99,132,1)",
-                borderWidth: 2,
-                hoverBackgroundColor: "rgba(255,99,132,0.4)",
-                hoverBorderColor: "rgba(255,99,132,1)",
-                data: [65, 59, 20, 81, 56, 55, 40],
-            }]
-        };
-          
-        var options = {
-            maintainAspectRatio: false,
-            scales: {
-                yAxes: [{
-                stacked: true,
-                gridLines: {
-                    display: true,
-                    color: "rgba(255,99,132,0.2)"
-                }
-                }],
-                xAxes: [{
-                gridLines: {
-                    display: false
-                }
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.2)',
+                    
+                ],
+                borderColor: [
+                    'rgba(255, 99, 132, 1)',
+                    
+                ],
+                borderWidth: 1,
+                label: 'Scatter Dataset',
+                data: [{
+                    x: -10,
+                    y: 0
+                }, {
+                    x: 0,
+                    y: 10
+                }, {
+                    x: 10,
+                    y: 5
                 }]
+            }]
+        }
+
+        var ctx = document.getElementById('myChart');
+        var scatterChart = new Chart(ctx, {
+            type: 'line',
+            data: data,
+            options: {
+                scales: {
+                    xAxes: [{
+                        type: 'linear',
+                        position: 'bottom'
+                    }]
+                }
             }
-        };
-          
-        Chart.Bar('myChart', {
-            options: options,
-            data: data
         });
     }
 })
