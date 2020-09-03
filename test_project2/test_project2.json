@@ -1,12 +1,12 @@
 [
     {
-        "project_name": "test1",
+        "project_name": "test2",
         "n_plots": 9
     },
     {
         "plot_name": "loss",
         "plot_id": 0,
-        "data_file": "/home/leon3428/dev/pyboard/test_project/plot.data",
+        "data_file": "/home/leon3428/dev/pyboard/test_project2/plot.data",
         "plot_type": "line",
         "x_axis_name": "episode",
         "y_axis_name": "loss",
@@ -16,17 +16,17 @@
     {
         "plot_name": "loss",
         "plot_id": 1,
-        "data_file": "/home/leon3428/dev/pyboard/test_project/plot.data",
+        "data_file": "/home/leon3428/dev/pyboard/test_project2/plot.data",
         "plot_type": "line",
         "x_axis_name": "episode",
         "y_axis_name": "loss",
-        "background_color": "rgba(0, 99, 132, 0.2)",
+        "background_color": "rgba(255, 99, 132, 0.2)",
         "border_color": "rgba(0, 99, 132, 1)"
     },
     {
         "plot_name": "loss",
         "plot_id": 2,
-        "data_file": "/home/leon3428/dev/pyboard/test_project/plot.data",
+        "data_file": "/home/leon3428/dev/pyboard/test_project2/plot.data",
         "plot_type": "line",
         "x_axis_name": "episode",
         "y_axis_name": "loss",
@@ -36,7 +36,7 @@
     {
         "plot_name": "loss",
         "plot_id": 3,
-        "data_file": "/home/leon3428/dev/pyboard/test_project/plot.data",
+        "data_file": "/home/leon3428/dev/pyboard/test_project2/plot.data",
         "plot_type": "line",
         "x_axis_name": "episode",
         "y_axis_name": "loss",
@@ -46,7 +46,7 @@
     {
         "plot_name": "loss",
         "plot_id": 4,
-        "data_file": "/home/leon3428/dev/pyboard/test_project/plot.data",
+        "data_file": "/home/leon3428/dev/pyboard/test_project2/plot.data",
         "plot_type": "line",
         "x_axis_name": "episode",
         "y_axis_name": "loss",
@@ -56,11 +56,17 @@
     {
         "plot_name": "loss",
         "plot_id": 5,
-        "data_file": "/home/leon3428/dev/pyboard/test_project/plot.data",
+        "data_file": "/home/leon3428/dev/pyboard/test_project2/plot.data",
         "plot_type": "line",
         "x_axis_name": "episode",
         "y_axis_name": "loss",
         "background_color": "rgba(0, 99, 132, 0.2)",
         "border_color": "rgba(0, 99, 132, 1)"
+    },
+    {
+        "plot_name": "console",
+        "plot_id": 6,
+        "data_file": "/home/leon3428/dev/pyboard/test_project2/textplot.data",
+        "plot_type": "text"
     }
 ]

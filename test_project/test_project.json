@@ -1,6 +1,6 @@
 [
     {
-        "project_name": "test2",
+        "project_name": "test1",
         "n_plots": 6
     },
     {
@@ -14,7 +14,7 @@
         "border_color": "rgba(0, 99, 132, 1)"
     },
     {
-        "plot_name": "loss",
+        "plot_name": "bla",
         "plot_id": 1,
         "data_file": "/home/leon3428/dev/pyboard/test_project/plot.data",
         "plot_type": "line",
@@ -24,7 +24,7 @@
         "border_color": "rgba(0, 99, 132, 1)"
     },
     {
-        "plot_name": "loss",
+        "plot_name": "da",
         "plot_id": 2,
         "data_file": "/home/leon3428/dev/pyboard/test_project/plot.data",
         "plot_type": "line",
