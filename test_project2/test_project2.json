@@ -68,5 +68,17 @@
         "plot_id": 6,
         "data_file": "/home/leon3428/dev/pyboard/test_project2/textplot.data",
         "plot_type": "text"
+    },
+    {
+        "plot_name": "image",
+        "plot_id": 7,
+        "data_file": "/home/leon3428/dev/pyboard/test_project2/img.jpg",
+        "plot_type": "image"
+    },
+    {
+        "plot_name": "image",
+        "plot_id": 7,
+        "data_file": "/home/leon3428/dev/pyboard/test_project2/img2.png",
+        "plot_type": "image"
     }
 ]

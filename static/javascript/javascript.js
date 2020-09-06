@@ -15,6 +15,10 @@ $(function(){
         var plotW = Math.floor(contW/(lastVal)-20);
         var plotH = Math.floor((plotW+20)*0.6);
 
+        var fontS = plotH*0.15*0.6;
+        fontS = fontS.toString() + "px";
+        $('.plotTitle div').css({fontSize: fontS});
+
         plotW = plotW.toString() + "px";
         plotH = plotH.toString() + "px";
 
@@ -58,20 +62,31 @@ $(function(){
         for(var i = 1;i < m_project.length; i++)
         {
             var type = m_project[i].plot_type;
+            var htmlLine = '<div class="plot" id = "plot'+ i.toString() +'"></div>';
+            $('#plotContainer').append(htmlLine);
+            htmlLine = '<div class="plotTitle", id="plotTitle' + i.toString() + '"> <div>' + m_project[i].plot_name + '</div> </div>';
+            $('#plot' + i.toString()).append(htmlLine);
+            htmlLine = '<div class="plotBody" id="plotBody' + i.toString() + '"></div>'
+            $('#plot' + i.toString()).append(htmlLine);
+
             if(type == "line")
             {
-                var htmlLine = '<div class="plot" id = "plot'+ i.toString() +'"><canvas id="Chart'+ i.toString() +'" class="plotCanvas"></canvas></div>';
-                $('#plotContainer').append(htmlLine);
+                var htmlLine = '<canvas id="Chart'+ i.toString() +'" class="plotCanvas"></canvas>';
+                $('#plotBody' + i.toString()).append(htmlLine);
                 createPlot(i);
             }
             if(type == "text")
             {
-                var htmlLine = '<div class="plot" id = "plot'+ i.toString() +'"> <h4 id="txtPlot' + i.toString()+ '" class="txtTitle">title</h4> <pre id="Text'+ i.toString() +'" class="txtPlot"> text</pre> </div>';
-                $('#plotContainer').append(htmlLine);
-                $('#txtPlot'+i.toString()).html(m_project[i].plot_name);
+                var htmlLine = '<pre id="Text'+ i.toString() +'" class="txtPlot"> text</pre>';
+                $('#plotBody' + i.toString()).append(htmlLine);
                 charts.push("#Text" + i.toString());
             }
-            
+            if(type =="image")
+            {
+                var htmlLine = '<img src="#" id="Image'+ i.toString() + '" class="imgPlot">';
+                $('#plotBody' + i.toString()).append(htmlLine);
+                charts.push("#Image" + i.toString());
+            }
         }
         resizePlots();
     }
@@ -104,12 +119,14 @@ $(function(){
                 backgroundColor: [bgColor],
                 borderColor: [boColor],
                 borderWidth: 1,
-                label: m_plot.plot_name,
                 data: []
             }]
         }
         var options = {
             maintainAspectRatio: false,
+            legend: {
+                display: false
+            },
             scales: {
                 xAxes: [{
                     type: 'linear',
@@ -187,6 +204,15 @@ $(function(){
                             });
                             charts[i].update();
                         }
+                    }
+                    if(type == "image")
+                    {
+                        var format = projects[selectedProject][i+1].data_file.slice(-3);
+                        if(format == "jpg")
+                        {
+                            format = "jpeg"
+                        }
+                        $(charts[i]).attr("src", "data:image/" + format + ";base64, " + new_data[i]);
                     }
                 }
             });

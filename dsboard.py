@@ -1,6 +1,7 @@
 import sys
 from flask import Flask, render_template, request, redirect, Response
 import random, json
+import base64
 
 plots = []
 last = []
@@ -25,10 +26,11 @@ def worker():
     else:
         message = '['
         for i in range(len(plots)):
-            f = open(plots[i].get("file"), "r")
-            data = f.read()
+            
 
             if plots[i].get("type") == "line":
+                f = open(plots[i].get("file"), "r")
+                data = f.read()
                 data = data.split('\n')
                 if len(data) == last[i]:
                     message += '[],'
@@ -44,8 +46,15 @@ def worker():
                 message+='],'
 
             elif plots[i].get("type") == "text":
+                f = open(plots[i].get("file"), "r")
+                data = f.read()
                 data = data.replace('\n', '<br>')
                 message+='"' + data + '",'
+            
+            elif plots[i].get("type") == "image":
+                with open(plots[i].get("file"), "rb") as image_file:
+                    encoded_string = base64.b64encode(image_file.read()).decode('utf-8')
+                    message+='"' + encoded_string + '",'
 
         message = message[:-1]
         message += ']'
