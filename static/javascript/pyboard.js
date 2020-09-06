@@ -66,9 +66,9 @@ $(function(){
             }
             if(type == "text")
             {
-                var htmlLine = '<div class="plot" id = "plot'+ i.toString() +'"> <pre id="Text'+ i.toString() +'" class="plotPre"> text</pre> </div>';
+                var htmlLine = '<div class="plot" id = "plot'+ i.toString() +'"> <h4 id="txtPlot' + i.toString()+ '" class="txtTitle">title</h4> <pre id="Text'+ i.toString() +'" class="txtPlot"> text</pre> </div>';
                 $('#plotContainer').append(htmlLine);
-                
+                $('#txtPlot'+i.toString()).html(m_project[i].plot_name);
                 charts.push("#Text" + i.toString());
             }
             
