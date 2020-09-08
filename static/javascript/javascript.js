@@ -133,14 +133,14 @@ $(function(){
                     position: 'bottom',
                     scaleLabel: {
                         display: true,
-                        labelString: m_plot.x_axis_name
+                        labelString: m_plot.x_axis_label
                     }
 
                 }],
                 yAxes: [{
                     scaleLabel: {
                         display: true,
-                        labelString: m_plot.y_axis_name
+                        labelString: m_plot.y_axis_label
                     }
 
                 }]
@@ -186,7 +186,13 @@ $(function(){
                 return response.text();
             }).then(function (text) {
                 //console.log(text);
-                var new_data = JSON.parse(JSON.parse(text));
+                var new_data = JSON.parse(text);
+                try{
+                    new_data = JSON.parse(new_data);
+                } 
+                catch(err){
+
+                }
                 for(var i = 0; i < new_data.length;i++)
                 {
                     var type = projects[selectedProject][i+1].plot_type;
@@ -207,6 +213,10 @@ $(function(){
                     }
                     if(type == "image")
                     {
+                        if(new_data[i] == "")
+                        {
+                            continue;
+                        }
                         var format = projects[selectedProject][i+1].data_file.slice(-3);
                         if(format == "jpg")
                         {

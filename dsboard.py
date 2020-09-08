@@ -26,35 +26,54 @@ def worker():
     else:
         message = '['
         for i in range(len(plots)):
-            
 
             if plots[i].get("type") == "line":
-                f = open(plots[i].get("file"), "r")
-                data = f.read()
-                data = data.split('\n')
-                if len(data) == last[i]:
-                    message += '[],'
-                    continue
+
                 message += '['
-                for j in range(last[i], len(data)):
-                    line = data[j].split()
-                    if len(line) != 2:
-                        continue
-                    message+= '{"x": "' + line[0] + '", "y": "' + line[1] + '"},'
-                last[i] = len(data)
-                message = message[:-1]
-                message+='],'
+                try:
+                    f = open(plots[i].get("file"), "r") 
+                    data = f.read()
+                    data = data.strip()
+                    data = data.split('\n')
+                   
+                    last_valid = -1
+                    for j in range(last[i], len(data)):
+                        line = data[j].split()
+                        if len(line) != 2:
+                            continue
+                        last_valid = j
+                        message+= '{"x": "' + line[0] + '", "y": "' + line[1] + '"},'
+                    if last[i] != last_valid+1 and last_valid > -1:
+                        last[i] = last_valid+1
+                        message = message[:-1]
+                    f.close()
+                except:
+                    pass
+                message += '],'
 
             elif plots[i].get("type") == "text":
-                f = open(plots[i].get("file"), "r")
-                data = f.read()
-                data = data.replace('\n', '<br>')
-                message+='"' + data + '",'
+                message += '"'
+                try:
+                    f = open(plots[i].get("file"), "r")
+                    data = f.read()
+                    data = data.replace('\n', '<br>')
+                    message+= data
+                    f.close()
+                except:
+                    pass
+                message += '",'
             
             elif plots[i].get("type") == "image":
-                with open(plots[i].get("file"), "rb") as image_file:
+                message += '"'
+                try:
+                    image_file = open(plots[i].get("file"), "rb")
                     encoded_string = base64.b64encode(image_file.read()).decode('utf-8')
-                    message+='"' + encoded_string + '",'
+                    message+=encoded_string
+                    image_file.close()
+                except:
+                    print("dadada")
+                    pass
+                message += '",'
 
         message = message[:-1]
         message += ']'
