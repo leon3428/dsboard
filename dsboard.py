@@ -5,6 +5,7 @@ import base64
 
 plots = []
 last = []
+config_path = ""
 
 app = Flask(__name__)
 app.static_folder = 'static'
@@ -79,7 +80,20 @@ def worker():
         message += ']'
         return json.dumps(message)
 
+@app.route('/control', methods=['GET', 'POST'])
+def worker2():
+    # POST request
+    global config_path
+    if request.method == 'POST':
+        config_path = json.loads(request.get_json())
+        print(config_path)
+        return 'OK', 200
 
-
+    # GET request
+    else:
+        with open(config_path, "r") as f:
+            data = f.read()
+            return json.dumps(data)
+        return json.dumps("")
 if __name__ == '__main__':
 	app.run()  

@@ -36,22 +36,32 @@ $(function(){
 
     $('#fileIn').change(function() { 
         var fr=new FileReader(); 
-        fr.onload=function(){ 
-            project = JSON.parse(fr.result);  
+        fr.onload=function(){
+            project = "error"
+            try{
+                project = JSON.parse(fr.result);
+            }
+            catch(err){} 
         } 
             
         fr.readAsText(this.files[0]); 
     })
     
     $('#btnSub').on('click', function(){
-        projects.push(project);
-        var name = project[0].project_name;
-        var id = projects.length-1;
-        $('#projectsDropdown').append('<p class="dropdown-item projectItem" id="'+ id.toString() +'">' + name +'</p>');
-        $("#browseModal .close").click();
-        $("#fileIn").val('');
-        selectedProject = projects.length-1;
-        refreshView();
+        if(project == "error")
+        {
+            $('#errorP').html('Selected file is not a valid project config file');
+        } else{
+            $('#errorP').html('');
+            projects.push(project);
+            var name = project[0].project_name;
+            var id = projects.length-1;
+            $('#projectsDropdown').append('<p class="dropdown-item projectItem" id="'+ id.toString() +'">' + name +'</p>');
+            $("#browseModal .close").click();
+            $("#fileIn").val('');
+            selectedProject = projects.length-1;
+            refreshView();
+        }
     })
 
     function refreshView()
@@ -98,7 +108,56 @@ $(function(){
         refreshView();
     })
 
+    function refreshSend(){
 
+        // returns a promise that can be used later. 
+        message = '"' + projects[selectedProject][0].project_config + '"';
+        return $.ajax
+        ({
+            type: "POST",
+            url: 'control',
+            dataType: 'json',
+            async: true,
+            data: JSON.stringify(message),
+            contentType: 'application/json'
+        })
+    }
+      
+
+    $('#refreshBtn').on("click", function(){
+        if(selectedProject == -1)
+        {
+            return;
+        }
+        refreshSend().then(function(data) {
+            // Run this when your request was successful
+            //console.log(data)
+        }).catch(function(err) {
+        // Run this when promise was rejected via reject()
+            //console.log(err)
+            fetch('/control')
+            .then(function (response) {
+                return response.text();
+            }).then(function (text) {
+                //console.log(text);
+                var new_data = JSON.parse(text);
+                try{
+                    new_data = JSON.parse(new_data);
+                } 
+                catch(err){
+
+                }
+                //console.log(new_data);
+                projects[selectedProject] = new_data
+                last_project = -1
+                refreshView();
+            });
+        })
+        
+     
+
+        
+    })
 
     function createPlot(id)
     {
@@ -113,9 +172,14 @@ $(function(){
         if(m_plot.border_color != undefined){
             boColor = m_plot.border_color
         }
+        var linet = 0.4
+        if(m_plot.line_tension != undefined){
+            linet = m_plot.line_tension;
+        }
 
         var data = {
             datasets: [{
+                lineTension: linet,
                 backgroundColor: [bgColor],
                 borderColor: [boColor],
                 borderWidth: 1,
@@ -127,6 +191,7 @@ $(function(){
             legend: {
                 display: false
             },
+            
             scales: {
                 xAxes: [{
                     type: 'linear',

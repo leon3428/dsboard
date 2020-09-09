@@ -5,14 +5,15 @@
     <title>DSboard</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='stylesheets/style.css') }}">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+
 
 </head>
 
@@ -20,13 +21,21 @@
     <div class="row-fluid">
         <div class="column sidebar">
             <h1>DSboard</h1>
-            <button type="button" class="btn dropdown-toggle" data-toggle="dropdown">
-                Project
-            </button>
-            <div class="dropdown-menu" id='projectsDropdown'>
-                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#browseModal">Find Projects</a>
-                <div class="dropdown-divider"></div>
+            <div class="row">
+                <div class="col">
+                    <button type="button" class="btn dropdown-toggle" data-toggle="dropdown">
+                        Project
+                    </button>
+                    <div class="dropdown-menu" id='projectsDropdown'>
+                        <a class="dropdown-item" href="#" data-toggle="modal" data-target="#browseModal">Find Projects</a>
+                        <div class="dropdown-divider"></div>
+                    </div>
+                </div>
+                <div class="col">
+                    <i class="fa fa-refresh" id="refreshBtn"></i>
+                </div>
             </div>
+            
                 
             
             <div class="slidecontainer">
@@ -52,7 +61,15 @@
                             
                             <input type="file" id="fileIn" class="form-control-file border" name="file">
                             
-                            <button type="submit" id="btnSub" class="btn"> Submit</button>
+                            <div class="row">
+                                <div class="col-3">
+                                    <button type="submit" id="btnSub" class="btn"> Submit</button>
+                                </div>
+                                <div class="col-9">
+                                    <p id="errorP"></p>
+                                </div>
+                            </div>
+                            
                         </div>
                         
                         <!-- Modal footer -->
