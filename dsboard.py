@@ -2,6 +2,7 @@ import sys
 from flask import Flask, render_template, request, redirect, Response
 import random, json
 import base64
+import os
 
 plots = []
 last = []
@@ -85,8 +86,7 @@ def worker2():
     # POST request
     global config_path
     if request.method == 'POST':
-        config_path = json.loads(request.get_json())
-        print(config_path)
+        config_path = os.path.join(json.loads(request.get_json()), 'config.json')
         return 'OK', 200
 
     # GET request

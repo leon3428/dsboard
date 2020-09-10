@@ -1,0 +1,26 @@
+[
+{
+"project_name": "TestProject",
+"project_folder": "path/to/project/folder"
+},
+{
+"plot_name": "sensorSimulation",
+"data_file": "sensorSimulation.data",
+"plot_type" : "line",
+"x_axis_label": "time", 
+"y_axis_label": "temperature(°C)", 
+"background_color": "rgba(0, 99, 132, 0.2)",
+"border_color": "rgba(0, 99, 132, 1)",
+"line_tension": "0"
+},
+{
+"plot_name": "console",
+"data_file": "console.data",
+"plot_type" : "text"
+},
+{
+"plot_name": "schematic",
+"data_file": "schematic.jpg",
+"plot_type" : "image"
+}
+]

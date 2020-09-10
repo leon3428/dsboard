@@ -111,7 +111,7 @@ $(function(){
     function refreshSend(){
 
         // returns a promise that can be used later. 
-        message = '"' + projects[selectedProject][0].project_config + '"';
+        message = '"' + projects[selectedProject][0].project_folder + '"';
         return $.ajax
         ({
             type: "POST",
@@ -230,7 +230,7 @@ $(function(){
             var message = "[";
             for(var i = 1;i < m_project.length;i++)
             {
-                message += '{"file" : "' + m_project[i].data_file + '", "type":"' + m_project[i].plot_type + '"}, ';
+                message += '{"file" : "' + m_project[0].project_folder + '/' + m_project[i].data_file  + '", "type":"' + m_project[i].plot_type + '"}, ';
             }
             message = message.slice(0, message.length-2);
             message += "]";
