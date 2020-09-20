@@ -6,6 +6,7 @@ $(function(){
     
     var lastVal = 4;
     function resizePlots() {
+        
         if(this.value != undefined){
             lastVal = this.value;
         }

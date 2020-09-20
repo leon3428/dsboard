@@ -80,12 +80,15 @@
                     </div>
                 </div>
             </div>
-            <div class="flex-container" id="plotContainer">
+            <div class="flex-container" id="plotContainer"></div>
+            <div class="toast" data-delay="5000">
+                <div class="toast-header">Error</div>
+                <div class="toast-body">config.json is not a valid json</div>
             </div>
 
         </div>
     </div>
-    <script src = "{{ url_for('static', filename='javascript/javascript.js') }}"></script>
+    <script src = "{{ url_for('static', filename='javascript/new.js') }}"></script>
 </body>
 
 </html>
