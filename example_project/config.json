@@ -6,14 +6,23 @@
     {
         "plot_name": "sensorSimulation",
         "plot_type" : "chart",
-        "x_axis_label": "time", 
-        "y_axis_label": "temperature(°C)",
+        "x_axis" : {
+            "label" : "time",
+            "begin_at_zero" : true
+        }, 
+        "y_axis" : {
+            "label" : "time",
+            "begin_at_zero" : true
+        },
         "data":[
             {
-                "data_file": "line1.data"
+                "data_file": "line1.data",
+                "line_tension": 0,
+                "label" : "tmp1"
             },
             {
-                "data_file": "line2.data"
+                "data_file": "line2.data",
+                "label" : "tmp2"
             }
         ] 
     },

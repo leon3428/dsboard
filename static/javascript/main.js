@@ -63,16 +63,18 @@ $(function(){
             $('#projectsDropdown').append('<p class="dropdown-item projectItem" id="'+ id.toString() +'">' + name +'</p>');
             $("#browseModal .close").click();
             $("#fileIn").val('');
-            selectedProject = projects.length-1;
             message = '"' + project[0].project_folder + '"' 
+            selectedProject = -1;
             $.ajax
             ({
                 type: "POST",
                 url: 'config',
-                dataType: 'json',
                 async: true,
                 data: JSON.stringify(message),
-                contentType: 'application/json'
+                contentType: 'application/json',
+                success: function(data) {
+                    selectedProject = projects.length-1;
+                }
             })
         }
     })
@@ -142,12 +144,14 @@ $(function(){
             $('#plotTitle' + ind.toString()).html(plotConfig.plot_name)
             plot = "#Image" + ind.toString();
         }
-        if(ind < plots.length){
-            plots[ind] = plot
+        if(ind-1 < plots.length){
+            plots[ind-1] = plot
         } else {
             plots.push(plot)
         }
     }
+
+    const COLORS = ["255, 163, 0", "227, 89, 208", "51, 185, 242", "230, 191, 0", "66, 191, 59", "182, 58, 240", "19, 168, 254", "207, 0, 96"];
 
     function createChart(ind, plotConfig){
         var data = {
@@ -155,16 +159,24 @@ $(function(){
         };
         for(var i = 0;i < plotConfig.data.length;i++)
         {
+            var colorId = i%COLORS.length;
+            var line = plotConfig.data[i];
             line = {
-                borderWidth: 1,
-                data: []
-            }
+                borderWidth: 2,
+                data: [],
+                last_line: 0,
+                fill: line.fill == undefined ? false : line.fill,
+                backgroundColor: line.color == undefined ? 'rgba(' + COLORS[colorId] + ', 0.3)' : 'rgba(' + line.color + ',0.3)',
+                borderColor: line.color == undefined ? 'rgba(' + COLORS[colorId] + ', 1)' : 'rgba(' + line.color + ',1)',
+                lineTension: line.line_tension == undefined ? 0.4 : line.line_tension,
+                label: line.label == undefined ? '' : line.label
+            };
             data.datasets.push(line);
         }
         var options = {
             maintainAspectRatio: false,
             legend: {
-                display: false
+                display: true
             },
             
             scales: {
@@ -173,15 +185,23 @@ $(function(){
                     position: 'bottom',
                     scaleLabel: {
                         display: true,
-                        labelString: plotConfig.x_axis_label
+                        labelString: plotConfig.x_axis.label
+                    },
+                    ticks: {
+                        beginAtZero: plotConfig.x_axis.begin_at_zero == undefined ? true : plotConfig.x_axis.begin_at_zero
                     }
 
                 }],
                 yAxes: [{
+                    type: 'linear',
                     scaleLabel: {
                         display: true,
-                        labelString: plotConfig.y_axis_label
+                        labelString: plotConfig.y_axis.label
+                    },
+                    ticks: {
+                        beginAtZero: plotConfig.y_axis.begin_at_zero == undefined ? true : plotConfig.y_axis.begin_at_zero
                     }
+                   
 
                 }]
             }
@@ -202,7 +222,8 @@ $(function(){
             return response.text();
         }).then(function (text) {
             var new_config = JSON.parse(text);
-            console.log(new_config);
+            
+            
             if(new_config != 'None')
             {
                 if(Array.isArray(new_config)){
@@ -215,15 +236,95 @@ $(function(){
         });
     }, 2000);
 
+    function switchData(){
+        data_hlt = !data_hlt
+        $.ajax
+        ({
+            type: "POST",
+            url: 'data',
+            async: true,
+            data: JSON.stringify(data_hlt),
+            contentType: 'application/json'
+        })
+    }
+
+    var data_hlt = true;
     //data
     setInterval(function(){
-        fetch('/data')
-        .then(function (response) {
-            return response.text();
-        }).then(function (text) {
-            var new_data = JSON.parse(text);
-            console.log(new_data);
-        });
+        if(selectedProject != -1)
+        {
+            if(data_hlt)
+            {
+                switchData();
+            }
+            
+            fetch('/data')
+            .then(function (response) {
+                return response.text();
+            }).then(function (text) {
+                var new_data = JSON.parse(text);
+                try{
+                    new_data = JSON.parse(new_data);
+                } 
+                catch(err){}
+                //console.log(new_data);
+               
+                for(var i = 0;i < new_data.length;i++)
+                {
+                    var type = projects[selectedProject][i+1].plot_type;
+                    if(type == "text")
+                    {
+                        if(new_data[i] != 'None')
+                            $(plots[i]).html(new_data[i]);
+                    }
+                    if(type == "chart")
+                    {
+                        for(var j=0; j < new_data[i].length;j++)
+                        {
+                            if(new_data[i][j] == 'None')
+                                continue;
+                            data = JSON.parse(new_data[i][j]);
+                            if(data.length < plots[i].data.datasets[j].last_line)
+                            {
+                                plots[i].data.datasets[j].last_line = 0;
+                                plots[i].data.datasets[j].data = [];
+                            }
+                            for(var k = plots[i].data.datasets[j].last_line; k < data.length; k++)
+                            {
+                                var point = {
+                                    x: data[k][0],
+                                    y: data[k][1]
+                                };
+                                plots[i].data.datasets[j].data.push(point);
+                            }
+                            plots[i].data.datasets[j].last_line = data.length;
+                        }
+                        plots[i].update();
+
+                    }
+                    if(type == "image")
+                    {
+                        if(new_data[i] != "None")
+                        {
+                            var format = projects[selectedProject][i+1].data_file.slice(-3);
+                            if(format == "jpg")
+                            {
+                                format = "jpeg"
+                            }
+                            $(plots[i]).attr("src", "data:image/" + format + ";base64, " + new_data[i]);
+                        }
+                        
+                    }
+                }
+                
+            });
+        } else {
+            if(!data_hlt)
+            {
+                switchData();
+            }
+        }
+        
     }, 2000);
 
 
