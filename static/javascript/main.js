@@ -10,9 +10,9 @@ $(function(){
         }
 
         var contW = $("#plotContainer").width();
-        contW = Math.floor( contW-20);
+        contW -= 20;
         var plotW = Math.floor(contW/(lastVal)-20);
-        var plotH = Math.floor((plotW+20)*0.6);
+        var plotH = Math.floor(plotW*0.6);
 
         var fontS = plotH*0.15*0.6;
         fontS = fontS.toString() + "px";
@@ -30,7 +30,7 @@ $(function(){
     $(document).on("click", ".projectItem" , function() {
         var projectId = $(this).attr('id');
         projectId = Number(projectId);
-        selectedProject = projectId;
+        changeProject(projectId, projects[projectId][0].project_folder);
     })
 
     //opening projects
@@ -38,6 +38,7 @@ $(function(){
     var project = '';
     var selectedProject = -1;
     var plots = []
+    var lastSelectedP = 0;
 
     $('#fileIn').change(function() { 
         var fr=new FileReader(); 
@@ -51,6 +52,7 @@ $(function(){
             
         fr.readAsText(this.files[0]); 
     })
+
     $('#btnSub').on('click', function(){
         if(project == "error")
         {
@@ -63,26 +65,30 @@ $(function(){
             $('#projectsDropdown').append('<p class="dropdown-item projectItem" id="'+ id.toString() +'">' + name +'</p>');
             $("#browseModal .close").click();
             $("#fileIn").val('');
-            message = '"' + project[0].project_folder + '"' 
-            selectedProject = -1;
-            $.ajax
-            ({
-                type: "POST",
-                url: 'config',
-                async: true,
-                data: JSON.stringify(message),
-                contentType: 'application/json',
-                success: function(data) {
-                    selectedProject = projects.length-1;
-                }
-            })
+            changeProject(id, project[0].project_folder);
         }
     })
+
+    function changeProject(id, folder)
+    {
+        var message = '"' + folder + '"'; 
+        $.ajax
+        ({
+            type: "POST",
+            url: 'config',
+            async: true,
+            data: JSON.stringify(message),
+            contentType: 'application/json',
+            success: function(data) {
+                selectedProject = id;
+            }
+        });
+    }
 
     //config
     function update_changes(new_config)
     {
-        project = projects[selectedProject]
+        project = projects[lastSelectedP]
         n = Math.max(new_config.length, project.length)
         for(var i = 1;i < n;i++)
         {
@@ -118,6 +124,7 @@ $(function(){
             }
         }
         projects[selectedProject] = new_config;
+        lastSelectedP = selectedProject;
     }
 
     function addContent(ind, plotConfig){
@@ -223,41 +230,25 @@ $(function(){
         }).then(function (text) {
             var new_config = JSON.parse(text);
             
-            
             if(new_config != 'None')
             {
                 if(Array.isArray(new_config)){
                     update_changes(new_config)
                 } else {
                     $('.toast').toast('show');  
-                }
-                
+                }     
+            } else {
+                fetchData();
             }
         });
     }, 2000);
 
-    function switchData(){
-        data_hlt = !data_hlt
-        $.ajax
-        ({
-            type: "POST",
-            url: 'data',
-            async: true,
-            data: JSON.stringify(data_hlt),
-            contentType: 'application/json'
-        })
-    }
 
-    var data_hlt = true;
     //data
-    setInterval(function(){
+    function fetchData()
+    {
         if(selectedProject != -1)
         {
-            if(data_hlt)
-            {
-                switchData();
-            }
-            
             fetch('/data')
             .then(function (response) {
                 return response.text();
@@ -267,7 +258,7 @@ $(function(){
                     new_data = JSON.parse(new_data);
                 } 
                 catch(err){}
-                //console.log(new_data);
+
                
                 for(var i = 0;i < new_data.length;i++)
                 {
@@ -318,15 +309,8 @@ $(function(){
                 }
                 
             });
-        } else {
-            if(!data_hlt)
-            {
-                switchData();
-            }
-        }
-        
-    }, 2000);
-
+        }     
+    }
 
 })
 

@@ -11,7 +11,6 @@ project = []
 app = Flask(__name__)
 app.static_folder = 'static'
 last_data_change = []
-data_hlt = True
 
 @app.route('/')
 def output():
@@ -34,6 +33,7 @@ def worker2():
             return json.dumps("None")
         if t != last_config_change:
             last_config_change = t
+
             data = ""
             try:
                 f = open(config_path, "r")
@@ -44,26 +44,22 @@ def worker2():
             except:
                 return json.dumps("None")
             last_data_change = []
-            print('clear')
+
             return json.dumps(project)
         else:
             return json.dumps("None")
 
 @app.route('/data', methods=['GET', 'POST'])
 def worker3():
-    global last_data_change, project, data_hlt
+    global last_data_change, project
 
     if request.method == 'POST':
-        data_hlt = request.get_json()
         return 'OK', 200
     else:
-        #print(data_hlt)
-        if data_hlt:
-            return json.dumps("None")
         message = '['
-        #print('k', last_data_change)
         if len(project)-1 != len(last_data_change):
             last_data_change = [-1]*(len(project)-1)
+
         for i in range(1,len(project)):
             Ptype = project[i]['plot_type']
             if Ptype == 'chart':

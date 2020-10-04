@@ -1,28 +1,29 @@
 [
     {
         "project_name": "TestProject",
-        "project_folder": "/home/leon3428/dev/pyboard/example_project"
+        "project_folder": "/path/to/project/folder"
     },
     {
         "plot_name": "sensorSimulation",
         "plot_type" : "chart",
         "x_axis" : {
-            "label" : "time",
+            "label" : "time(s)",
             "begin_at_zero" : true
         }, 
         "y_axis" : {
-            "label" : "time",
+            "label" : "temperature(°C)",
             "begin_at_zero" : true
         },
         "data":[
             {
-                "data_file": "line1.data",
+                "data_file": "s1.data",
                 "line_tension": 0,
-                "label" : "tmp1"
+                "label" : "sensor1"
             },
             {
-                "data_file": "line2.data",
-                "label" : "tmp2"
+                "data_file": "s2.data",
+                "line_tension": 0,
+                "label" : "sensor2"
             }
         ] 
     },
